@@ -1,0 +1,41 @@
+container{
+    max-width: 500px;;
+}
+
+table{
+    border-collapse: collapse;
+    border-style: hidden;
+}
+
+td{
+    border: 2px solid black;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+}
+
+.game-table{
+    margin-left:30px;
+}
+
+.caracters{
+    padding: 15px;
+    margin: 20px;
+}
+
+.add-border{
+    padding: 10px;
+    border-bottom:3px solid green;
+}
+
+.no-border{
+    padding: 10px;
+}
+.title{
+    margin-top: 30px;
+}
+.score{
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-left: 40px;
+}

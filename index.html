@@ -1,0 +1,219 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div="container">
+        <div class="row justify-content-md-center">
+            <img class="title" src="img/title.png">
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col-1 caracters text-center">
+                <img id="player1" src="img/mario.png">
+                <p id="mario-result" class="score">0</p>
+            </div>
+            <div class="col-1 caracters text-center">
+                <img id="player2" src="img/luigi.png">
+                <p id="luigi-result" class="score">0</p>
+            </div>
+        </div>
+        <div class="row justify-content-md-center">
+            <table id="myTable" class="game-table">
+                <tr>
+                    <td id="1" onclick="insertSymbol(this)" value="0"></td>
+                    <td id="2" onclick="insertSymbol(this)" value="0"></td>
+                    <td id="3" onclick="insertSymbol(this)" value="0">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td id="4" onclick="insertSymbol(this)" value="0">
+
+                    </td>
+                    <td id="5" onclick="insertSymbol(this)" value="0">
+
+                    </td>
+                    <td id="6" onclick="insertSymbol(this)" value="0">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td id="7" onclick="insertSymbol(this)" value="0">
+
+                    </td>
+                    <td id="8" onclick="insertSymbol(this)" value="0">
+
+                    </td>
+                    <td id="9" onclick="insertSymbol(this)" value="0">
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </div>
+</body>
+
+<script>
+    var player
+    var marioResult = 0
+    var luigiResult = 0
+
+    initialPlayer()
+
+    function insertSymbol(element) {
+        if (Number(element.getAttribute("value")) != 0) {
+            alert("Field full! Choose another!")
+        }
+        else {
+            if (player == 1) {
+                document.getElementById(element.id).setAttribute("value", 1)
+                insertImg(document.getElementById(element.id), "img/mushroom1.png")
+            }
+            else {
+                document.getElementById(element.id).setAttribute("value", -1)
+                insertImg(document.getElementById(element.id), "img/mushroom2.png")
+            }
+
+            setTimeout(checkWinner, 50);
+            changePlayer();
+        }
+    }
+
+    function initialPlayer() {
+        player = 1
+        document.getElementById("player" + player).setAttribute("class", "add-border")
+        document.getElementById("player2").setAttribute("class", "no-border")
+    }
+
+    function changePlayer() {
+        if (player == 1) {
+            document.getElementById("player" + player).setAttribute("class", "no-border")
+
+            player = 2
+            document.getElementById("player" + player).setAttribute("class", "add-border")
+        }
+        else {
+            document.getElementById("player" + player).setAttribute("class", "no-border")
+
+            player = 1
+            document.getElementById("player" + player).setAttribute("class", "add-border")
+        }
+    }
+
+    function checkWinner() {
+        var arr = new Array(3)
+        for (i = 0; i < 3; i++)
+            arr[i] = new Array(3)
+
+        var table = document.getElementById("myTable");
+        for (var i = 0, row; row = table.rows[i]; i++) {
+            for (var j = 0, col; col = row.cells[j]; j++) {
+                arr[i][j] = Number(col.getAttribute("value"))
+            }
+        }
+
+        for (var i = 0; i < 3; i++) {
+            var rowSum = 0;
+            for (var j = 0; j < 3; j++) {
+                rowSum += arr[i][j];
+            }
+            if (rowSum === 3) {
+                alert("Mario WIN!");
+                marioResult++;
+                resetGame();
+                return;
+            }
+            else if (rowSum === -3) {
+                alert("Luigi WIN!");
+                luigiResult++;
+                resetGame();
+                return;
+            }
+        }
+
+        for (var i = 0; i < 3; i++) {
+            var colSum = 0;
+            for (var j = 0; j < 3; j++) {
+                colSum += arr[j][i];
+            }
+            if (colSum === 3) {
+                alert("Mario WIN!");
+                marioResult++;
+                resetGame();
+                return;
+            }
+            else if (colSum === -3) {
+                alert("Luigi WIN!");
+                luigiResult++;
+                resetGame();
+                return;
+            }
+        }
+
+        if (arr[0][0] + arr[1][1] + arr[2][2] === 3) {
+            alert("Mario WIN!");
+            marioResult++;
+            resetGame();
+            return;
+        }
+        else if (arr[0][0] + arr[1][1] + arr[2][2] === -3) {
+            alert("Luigi WIN!");
+            luigiResult++
+            resetGame()
+            return;
+        }
+
+        if (arr[2][0] + arr[1][1] + arr[0][2] === 3) {
+            alert("Mario WIN!");
+            marioResult++
+            resetGame()
+            return;
+        }
+        else if (arr[2][0] + arr[1][1] + arr[0][2] === -3) {
+            alert("Luigi WIN!");
+            luigiResult++;
+            resetGame()
+            return;
+        }
+
+
+        var fullCells = 0
+        for (var i = 1; i <= 9; i++) {
+            if (document.getElementById(i).innerHTML.trim() != "") {
+                fullCells++
+            }
+        }
+        if (fullCells == 9) {
+            alert("All cells are full! No winner!")
+            resetGame()
+            return
+        }
+    }
+
+    function resetGame() {
+        document.getElementById("mario-result").innerHTML = marioResult;
+        document.getElementById("luigi-result").innerHTML = luigiResult;
+        var table = document.getElementById("myTable");
+        for (var i = 0, row; row = table.rows[i]; i++) {
+            for (var j = 0, col; col = row.cells[j]; j++) {
+                col.setAttribute("value", 0)
+                col.innerHTML = '';
+            }
+        }
+        initialPlayer()
+    }
+
+    function insertImg(element, name) {
+        var img = document.createElement("img");
+        img.src = name;
+        element.appendChild(img);
+    }
+</script>
+
+</html>
